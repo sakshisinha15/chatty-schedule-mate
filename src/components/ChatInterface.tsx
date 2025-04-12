@@ -97,16 +97,22 @@ const ChatInterface: React.FC = () => {
       });
       
       // Move to next step (time selection)
-      const newState = { ...state, date, step: 'time' };
+      const newState = { ...state, date, step: 'time' as const };
       setState(newState);
       
       // Show time picker
       setShowTimePicker(true);
+      
+      // Show a toast notification
+      toast({
+        title: "Date selected",
+        description: `You've selected ${date.toLocaleDateString()}`,
+      });
     }
   };
 
   const handleTimeSubmit = (time: string) => {
-    setState(prev => ({ ...prev, time, step: 'confirmation' }));
+    setState(prev => ({ ...prev, time, step: 'confirmation' as const }));
     setShowTimePicker(false);
     
     // Add a user message showing the selected time
@@ -121,14 +127,20 @@ const ChatInterface: React.FC = () => {
       const botResponse = getResponseForState({ 
         ...state, 
         time, 
-        step: 'confirmation' 
+        step: 'confirmation' as const
       });
       addMessage(botResponse);
+      
+      // Show a toast notification
+      toast({
+        title: "Time selected",
+        description: `You've selected ${time}`,
+      });
     }, 700);
   };
 
   const handleContactSubmit = (email: string, phone: string) => {
-    setState(prev => ({ ...prev, email, phone, step: 'reason' }));
+    setState(prev => ({ ...prev, email, phone, step: 'reason' as const }));
     setShowContactForm(false);
     
     // Add a user message with the contact info
@@ -144,9 +156,15 @@ const ChatInterface: React.FC = () => {
         ...state, 
         email, 
         phone, 
-        step: 'reason' 
+        step: 'reason' as const
       });
       addMessage(botResponse);
+      
+      // Show a toast notification
+      toast({
+        title: "Contact information saved",
+        description: "Your email and phone number have been recorded.",
+      });
     }, 700);
   };
 
